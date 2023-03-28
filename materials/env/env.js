@@ -3,8 +3,10 @@ class Env {
 
         this.gamesAmount = 1
         this.games = {}
-        this.graphSize = 11
-        this.coordSize = 20
+        this.graphSize = 50
+        this.graphLength = this.graphSize * this.graphSize
+        this.coordSize = 15
+        this.searchCount = 10
         this.IDIndex = 0
         this.width = this.graphSize * this.coordSize
         this.height = this.graphSize * this.coordSize

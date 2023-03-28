@@ -74,3 +74,14 @@ function findLowestCost(origin, iter) {
 
     return lowestCost
 }
+
+function forAdjacentCoords(startCoord, f) {
+    for (let x = startCoord.x - 1; x <= startCoord.x + 1; x += 1) {
+        for (let y = startCoord.y - 1; y <= startCoord.y + 1; y += 1) {
+            if (x === startCoord.x && y === startCoord.y) continue
+            if (!isXYInGraph(x, y)) continue
+
+            f({ x, y })
+        }
+    }
+}
