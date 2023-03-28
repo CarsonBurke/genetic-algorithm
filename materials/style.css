@@ -1,0 +1,311 @@
+/*IMPORTANT*/
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Material Icons'), local('MaterialIcons-Regular'), url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'), url(https://example.com/MaterialIcons-Regular.woff) format('woff'), url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    font-family: "Raleway";
+    background: var(--tertiaryShade);
+    color: white;
+    --primary: rgb(211, 13, 13);
+    --primaryShade: white;
+    --secondaryShade: rgb(51, 48, 54);
+    --tertiaryShade: rgb(32, 32, 39);
+}
+
+*::-webkit-scrollbar {
+    width: 14px;
+    background: var(--secondaryShade);
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--secondaryShade);
+    box-shadow: rgba(255, 255, 255, 0.2) inset 0 0 0 1000px;
+    width: 100%;
+    transition: all 0.3s;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: #36394580;
+    box-shadow: rgba(255, 255, 255, 0.4) inset 0 0 0 1000px;
+}
+
+* {
+    all: unset;
+}
+
+title {
+    display: none;
+}
+
+style {
+    display: none;
+}
+
+div {
+    display: block;
+}
+
+
+/* Game */
+
+.sprite {
+    display: none;
+}
+
+
+/* Content */
+
+.envParent {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    min-height: calc(100vh - 40px);
+    background-color: var(--secondaryShade);
+    gap: 20px;
+    position: relative;
+}
+
+.env {
+    box-shadow: rgba(0, 0, 0, 0.3) 0 0 80px 0;
+    background: var(--tertiaryShade);
+    z-index: 1;
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.displayParent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.displayChild {
+    padding: 20px;
+    gap: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 0 80px 0;
+    background: var(--tertiaryShade);
+}
+
+.envIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 0 20px 0;
+}
+
+.envTitle {
+    gap: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: 1px;
+    user-select: none;
+}
+
+.statsParent {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+}
+
+.statsChild {
+    display: flex;
+    gap: 10px;
+}
+
+.statsChild :nth-child(even) {
+    text-align: left;
+}
+
+.statsChild :nth-child(odd) {
+    text-align: right;
+}
+
+.statsHeader {
+    font-weight: 500;
+    width: 50%;
+}
+
+.statsAmount {
+    font-weight: 200;
+    width: 50%;
+}
+
+.changeParent {
+    display: flex;
+    justify-content: center;
+    border-radius: 30px;
+}
+
+.changeInput {
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    padding: 6px;
+    padding-left: 15px;
+    font-size: 16px;
+    width: 130px;
+    border: var(--secondaryShade) 2px solid;
+    user-select: none;
+    transition: all 0.3s;
+}
+
+.changeInput::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.changeInput:hover {
+    box-shadow: rgba(0, 0, 0, 0.3) 0 4px 20px 0;
+}
+
+.changeInput:focus {
+    box-shadow: rgba(0, 0, 0, 0.3) 0 12px 20px 0;
+}
+
+.changeButton {
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    background-color: var(--secondaryShade);
+    padding: 8px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s;
+}
+
+.changeButton:hover {
+    box-shadow: rgba(0, 0, 0, 0.3) 0 4px 20px 0;
+}
+
+.changeButton:focus {
+    box-shadow: rgba(0, 0, 0, 0.3) 0 12px 20px 0;
+}
+
+
+/* Network Visuals */
+
+.networkManagerParent {
+    padding: 20px;
+    background: var(--tertiaryShade);
+    box-shadow: rgba(0, 0, 0, 0.3) 0 0 40px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.networkGuide {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: var(--secondaryShade);
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 15px;
+}
+
+.colorGuideParent {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.colorGuideColor {
+    width: 15px;
+    height: 15px;
+}
+
+.networkParent {
+    display: flex;
+    gap: 20px;
+    position: relative;
+    justify-items: center;
+    align-items: center;
+    width: fit-content;
+    user-select: none;
+}
+
+.networkParentHide {
+    display: none;
+}
+
+.perceptronLayer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.perceptronLayer div {
+    z-index: 1;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background: black;
+    color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    border: 2px solid transparent;
+    overflow: hidden;
+}
+
+.inputLayer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.inputLayer p {
+    max-width: 200px;
+    font-weight: 500;
+    height: 50px;
+    line-height: 50px;
+}
+
+.descriptionLayer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.inputDescriptionLayer p {
+    text-align: right;
+}
+
+.descriptionLayer p {
+    max-width: 200px;
+    font-weight: 500;
+    height: 50px;
+    line-height: 50px;
+}
+
+.linesParent {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.linesParent line {
+    stroke-width: 2px;
+}

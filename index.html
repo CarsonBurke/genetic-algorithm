@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="WebGine">
+    <meta name="description" content="WebGine">
+    <meta name="theme-color" content="rgb(51, 48, 54)">
+    <meta property="og:image" content="materials/images/webGenIcon.png" />
+
+    <link rel="apple-touch-icon" href="materials/images/webGineIcon.png">
+    <link rel="icon" href="materials/images/webGineIcon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+    <link href="materials/style.css" rel="stylesheet" type="text/css" />
+
+    <title>WebGine</title>
+</head>
+
+<body>
+
+    <div class="envParent">
+        <canvas class="env">
+
+        </canvas>
+        <div class="displayParent">
+            <div class="displayChild UIParent">
+
+                <h1 class="envTitle"><img class="envIcon" src="materials/images/webGineIcon.png" />WebGine</h1>
+
+                <div class="statsParent">
+
+                    <div class="statsChild">
+
+                        <h3 class="statsHeader">Tick: </h3>
+                        <h3 class="statsAmount" id="tick">0</h3>
+
+                    </div>
+                    <div class="statsChild">
+
+                        <h3 class="statsHeader">Round Tick: </h3>
+                        <h3 class="statsAmount" id="roundTick">0</h3>
+
+                    </div>
+                    <div class="statsChild">
+
+                        <h3 class="statsHeader">Speed: </h3>
+                        <h3 class="statsAmount" id="speed">0</h3>
+
+                    </div>
+                    <div class="statsChild">
+
+                        <h3 class="statsHeader">Path Length: </h3>
+                        <h3 class="statsAmount" id="pathLength">unknown</h3>
+
+                    </div>
+                </div>
+                <form class="changeParent" id="speedForm">
+
+                    <input class="changeInput" type="number" placeholder="Speed" id="newSpeed">
+                    <button class="changeButton waveButton" id="changeSpeed">Change</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sprites -->
+
+    <img src="materials/images/webGineIcon.png" class="sprite" id="example">
+    <img src="materials/images/x.png" class="sprite" id="x">
+
+    <!-- JS Imports -->
+
+    <!-- Game -->
+
+    <script src="materials/env/env.js"></script>
+
+    <script src="materials/game/game.js"></script>
+    <script src="materials/game/gameUtils.js"></script>
+    <script src="materials/game/gameConstants.js"></script>
+
+    <!-- General -->
+
+    <script src="materials/script.js"></script>
+    <script src="materials/wave.js"></script>
+</body>
+
+</html>
