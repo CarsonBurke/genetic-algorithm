@@ -6,7 +6,7 @@ class Env {
         this.graphSize = 50
         this.graphLength = this.graphSize * this.graphSize
         this.coordSize = 15
-        this.searchCount = 10
+        this.searchCount = 100
         this.IDIndex = 0
         this.width = this.graphSize * this.coordSize
         this.height = this.graphSize * this.coordSize

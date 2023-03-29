@@ -2,6 +2,7 @@ class Game {
     
     running = false
     graph = new Uint8Array()
+    costs = new Uint8Array()
     /**
      * { 
      * score: number,
@@ -27,9 +28,10 @@ class Game {
 
         for (let i = 0; i < env.searchCount; i++) {
 
+            let packedCoord
             while (true) {
 
-                const packedCoord = Math.floor(Math.random() * env.graphLength)
+                packedCoord = Math.floor(Math.random() * env.graphLength)
                 if (usedCoords[packedCoord]) continue
 
                 usedCoords.add(packedCoord)
@@ -39,6 +41,16 @@ class Game {
 
             totalCost += this.findCostOfCoord(coord)
         }
+
+        console.log(usedCoords)
+        console.log(totalCost)
+        console.log('')
+
+        this.generations.push({
+            totalCost: totalCost,
+            coords: Array.from(usedCoords).map(packedCoord => unpackCoord(packedCoord)),
+            costMap: this.costs,
+        })
 
         this.visualize()
     }
@@ -50,7 +62,7 @@ class Game {
         let costAdd = 1
         
         while (thisGeneration.length) {
-            nextGeneration = []
+            let nextGeneration = []
 
             for (const coord of thisGeneration) {
 
@@ -60,8 +72,9 @@ class Game {
                     if (visited[packedCoord] !== 0) return
                     visited[packedCoord] = 1
 
-                    nextGeneration.push(coord)
+                    nextGeneration.push(adjCoord)
                     totalCost += costAdd
+                    this.costs[packedCoord] += costAdd
                 })
             }
 
@@ -81,24 +94,45 @@ Game.prototype.init = function() {
 
     this.running = true
 
-    this.graph = new Uint8Array(env.graphSize * env.graphSize)
-
+    this.graph = new Uint8Array(env.graphLength)
+    this.costs = new Uint8Array(env.graphLength)
 }
 
 Game.prototype.visualize = function() {
 
     // Draw flood values
-
+/* 
     for (let x = 0; x < env.graphSize; x++) {
         for (let y = 0; y < env.graphSize; y++) {
 
-            let color = `hsl(570${this.graph[packXY(x, y)] * 1.7}, 100%, 60%)`
-            if (this.visited[packXY(x, y)] === 1 && this.graph[packXY(x, y)] === 0) color = 'blue'
+            let color = `hsl(${this.graph[packXY(x, y)]}, 100%, 60%)`
             env.cm.fillStyle = color
 
             env.cm.beginPath();
             env.cm.fillRect(x * env.coordSize, y * env.coordSize, env.coordSize, env.coordSize);
             env.cm.stroke();
+        }
+    }
+ */
+    const bestGeneration = this.generations.reduce((bestGen, gen) => gen.score > bestGen.score ? max : gen)
+
+    for (const coord of bestGeneration.coords) {
+
+        let color = `black`
+        env.cm.fillStyle = color
+
+        env.cm.beginPath();
+        env.cm.fillRect(coord.x * env.coordSize, coord.y * env.coordSize, env.coordSize, env.coordSize);
+        env.cm.stroke();
+    }
+
+    for (let x = 0; x < env.graphSize; x++) {
+        for (let y = 0; y < env.graphSize; y++) {
+
+            env.cm.fillStyle = 'white'
+            env.cm.font = "8px Arial";
+            env.cm.textAlign = "center";
+            env.cm.fillText(this.costs[packXY(x, y)], x * env.coordSize + env.coordSize * 0.5, y * env.coordSize + env.coordSize * 0.75);
         }
     }
 /* 
