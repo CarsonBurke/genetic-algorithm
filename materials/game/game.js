@@ -2,7 +2,7 @@ class Game {
     
     running = false
     graph = new Uint8Array()
-    costs = new Uint8Array()
+    costs = new Uint32Array()
     /**
      * { 
      * score: number,
@@ -22,6 +22,13 @@ class Game {
             this.visualize()
             return
         }
+
+        if (this.generations.length < env.generationsQuota) this.initGeneration()
+        else this.mutateGenerations()
+
+        this.visualize()
+    }
+    initGeneration() {
 
         const usedCoords = new Set()
         let totalCost = 0
@@ -51,8 +58,6 @@ class Game {
             coords: Array.from(usedCoords).map(packedCoord => unpackCoord(packedCoord)),
             costMap: this.costs,
         })
-
-        this.visualize()
     }
     findCostOfCoord(coord) {
 
@@ -84,6 +89,32 @@ class Game {
 
         return totalCost
     }
+    mutateGenerations() {
+
+        for (const generation of this.generations) {
+
+            generation.costs = new Uint32Array()
+            const usedCoords = generation.map(coords => packCoord(coord))
+
+            for (const coord of generation.coords) {
+
+                // 50% chance to not mutate
+
+                if (randomBool()) continue
+
+                let newCoord
+                while (!newCoord || usedCoords.has(packCoord(newCoord))) {
+
+                    newCoord = randomOffsetFor(coord)
+                }
+                
+                usedCoords.add(packCoord(newCoord))
+                usedCoords.remove(packCoord(coord))
+
+                console.log(newCoord)
+            }
+        }
+    }
     reset() {
 
         this.init()
@@ -95,7 +126,7 @@ Game.prototype.init = function() {
     this.running = true
 
     this.graph = new Uint8Array(env.graphLength)
-    this.costs = new Uint8Array(env.graphLength)
+    this.costs = new Uint32Array(env.graphLength)
 }
 
 Game.prototype.visualize = function() {
@@ -130,7 +161,7 @@ Game.prototype.visualize = function() {
         for (let y = 0; y < env.graphSize; y++) {
 
             env.cm.fillStyle = 'white'
-            env.cm.font = "8px Arial";
+            env.cm.font = "10px Arial";
             env.cm.textAlign = "center";
             env.cm.fillText(this.costs[packXY(x, y)], x * env.coordSize + env.coordSize * 0.5, y * env.coordSize + env.coordSize * 0.75);
         }

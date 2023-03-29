@@ -85,3 +85,33 @@ function forAdjacentCoords(startCoord, f) {
         }
     }
 }
+
+function randomBool() {
+
+    return Math.floor(Math.random() * 2)
+}
+
+function randomOnesOffset() {
+
+    return randomBool() ? 1 : -1
+}
+
+function randomOffsetFor(coord) {
+
+    const offsetCoords = [undefined, undefined]
+
+    for (i = 0; i < offsetCoords.length; i++) {
+
+        let coordVal
+
+        while (coordVal <= 0 || coordVal >= env.graphSize) {
+
+            coordVal = coord.x + randomOnesOffset()
+        }
+    }
+
+    return {
+        x: offsetCoords[0],
+        y: offsetCoords[1]
+    }
+}
