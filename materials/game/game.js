@@ -30,6 +30,7 @@ class Game {
     }
     initGeneration() {
 
+        this.costs = new Uint32Array()
         const usedCoords = new Set()
         let totalCost = 0
 
@@ -93,27 +94,58 @@ class Game {
 
         for (const generation of this.generations) {
 
-            generation.costs = new Uint32Array()
-            const usedCoords = generation.map(coords => packCoord(coord))
+            this.costs = new Uint32Array(env.graphLength)
+            const usedCoords = new Set(generation.coords.map(coord => packCoord(coord)))
+            const newCoords = []
+            let newTotalCost = 0
 
             for (const coord of generation.coords) {
 
+                const packedCoord = packCoord(coord)
+
                 // 50% chance to not mutate
 
-                if (randomBool()) continue
+                if (randomBool()) {
 
-                let newCoord
-                while (!newCoord || usedCoords.has(packCoord(newCoord))) {
+                    usedCoords.add(packedCoord)
+                    newCoords.push(coord)
+    
+                    const newCost = this.findCostOfCoord(coord)
+                    newTotalCost += newCost
+                    continue
+                }
 
-                    newCoord = randomOffsetFor(coord)
+                const newCoord = randomOffsetFor(coord)
+
+                const packedNewCoord = packCoord(newCoord)
+                if (usedCoords.has(packedNewCoord)) {
+
+                    usedCoords.add(packedCoord)
+                    newCoords.push(coord)
+    
+                    const newCost = this.findCostOfCoord(coord)
+                    newTotalCost += newCost
+                    continue
                 }
                 
-                usedCoords.add(packCoord(newCoord))
-                usedCoords.remove(packCoord(coord))
+                usedCoords.add(packedNewCoord)
+                usedCoords.delete(packCoord(coord))
+                newCoords.push(newCoord)
 
-                console.log(newCoord)
+                const newCost = this.findCostOfCoord(newCoord)
+                newTotalCost += newCost
             }
+
+            generation.costs = new Uint32Array(this.costs)
+            generation.coords = newCoords
+            generation.totalCost = newTotalCost
         }
+
+        console.log('end')
+    }
+    cloneGeneration() {
+
+        
     }
     reset() {
 
@@ -126,7 +158,6 @@ Game.prototype.init = function() {
     this.running = true
 
     this.graph = new Uint8Array(env.graphLength)
-    this.costs = new Uint32Array(env.graphLength)
 }
 
 Game.prototype.visualize = function() {

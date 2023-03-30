@@ -98,20 +98,22 @@ function randomOnesOffset() {
 
 function randomOffsetFor(coord) {
 
-    const offsetCoords = [undefined, undefined]
+    const offsetCoord = {
+        x: -1,
+        y: -1,
+    }
 
-    for (i = 0; i < offsetCoords.length; i++) {
+    for (const key in offsetCoord) {
 
-        let coordVal
+        let coordVal = offsetCoord[key]
 
-        while (coordVal <= 0 || coordVal >= env.graphSize) {
+        while (coordVal < 0 || coordVal >= env.graphSize) {
 
-            coordVal = coord.x + randomOnesOffset()
+            coordVal = coord[key] + randomOnesOffset()
         }
+
+        offsetCoord[key] = coordVal
     }
 
-    return {
-        x: offsetCoords[0],
-        y: offsetCoords[1]
-    }
+    return offsetCoord
 }
