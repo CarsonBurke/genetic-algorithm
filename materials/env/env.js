@@ -6,7 +6,7 @@ class Env {
         this.graphSize = 20
         this.graphLength = this.graphSize * this.graphSize
         this.coordSize = 30
-        this.searchCount = 100
+        this.searchCount = 10
         this.generationsQuota = 100
         this.IDIndex = 0
         this.width = this.graphSize * this.coordSize
@@ -16,13 +16,15 @@ class Env {
         this.tick = 0
         this.roundTick = 0
         this.speed = 1
-        this.pathLength = 'unknown'
+        this.bestTotalScore = 0
+        this.bestGenScore = 0
 
         this.stats = [
             'tick',
             'roundTick',
             'speed',
-            'pathLength',
+            'bestTotalScore',
+            'bestGenScore',
         ]
     }
 }
@@ -72,11 +74,6 @@ Env.prototype.run = function() {
     env.tick += 1
     env.roundTick += 1
 
-    for (const statType of env.stats) {
-
-        document.getElementById(statType).innerText = env[statType]
-    }
-
     // Store the current transformation matrix
 
     env.cm.save()
@@ -100,6 +97,11 @@ Env.prototype.run = function() {
         if (game.running) runningGames += 1
 
         game.run()
+    }
+
+    for (const statType of env.stats) {
+
+        document.getElementById(statType).innerText = env[statType]
     }
 
     //

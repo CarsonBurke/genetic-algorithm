@@ -22,43 +22,52 @@ class Game {
             this.visualize()
             return
         }
+        
+        if (!this.initGeneration()) {
 
-        if (this.generations.length < env.generationsQuota) this.initGeneration()
-        else this.mutateGenerations()
+            this.reproduce()
+            this.mutateGenerations()
+        }
+
+        this.manageBest()
 
         this.visualize()
     }
     initGeneration() {
 
-        this.costs = new Uint32Array()
-        const usedCoords = new Set()
-        let totalCost = 0
+        if (this.generations.length >= env.generationsQuota) return false
 
-        for (let i = 0; i < env.searchCount; i++) {
+        let i = 0
+        for (; i < env.generationsQuota; i++) {
 
-            let packedCoord
-            while (true) {
-
-                packedCoord = Math.floor(Math.random() * env.graphLength)
-                if (usedCoords[packedCoord]) continue
-
-                usedCoords.add(packedCoord)
-                break
+            this.costs = new Uint32Array(env.graphLength)
+            const usedCoords = new Set()
+            let totalCost = 0
+    
+            for (let j = 0; j < env.searchCount; j++) {
+    
+                let packedCoord
+                while (true) {
+    
+                    packedCoord = Math.floor(Math.random() * env.graphLength)
+                    if (usedCoords[packedCoord]) continue
+    
+                    usedCoords.add(packedCoord)
+                    break
+                }
+                const coord = unpackCoord(packedCoord)
+    
+                totalCost += this.findCostOfCoord(coord)
             }
-            const coord = unpackCoord(packedCoord)
 
-            totalCost += this.findCostOfCoord(coord)
+            this.generations.push({
+                totalCost: totalCost,
+                coords: Array.from(usedCoords).map(packedCoord => unpackCoord(packedCoord)),
+                costMap: new Uint32Array(this.costs),
+            })
         }
 
-        console.log(usedCoords)
-        console.log(totalCost)
-        console.log('')
-
-        this.generations.push({
-            totalCost: totalCost,
-            coords: Array.from(usedCoords).map(packedCoord => unpackCoord(packedCoord)),
-            costMap: this.costs,
-        })
+        return true
     }
     findCostOfCoord(coord) {
 
@@ -136,16 +145,37 @@ class Game {
                 newTotalCost += newCost
             }
 
-            generation.costs = new Uint32Array(this.costs)
+            generation.costMap = new Uint32Array(this.costs)
             generation.coords = newCoords
             generation.totalCost = newTotalCost
         }
-
-        console.log('end')
     }
-    cloneGeneration() {
+    reproduce() {
 
-        
+        this.generations.sort((a, b) => {
+            return a.totalCost - b.totalCost
+        })
+
+        this.generations.splice(0, Math.floor(this.generations.length / 2))
+
+        const newGenerations = []
+        for (const generation of this.generations) {
+
+            newGenerations.push({
+                totalCost: generation.totalCost,
+                coords: generation.coords,
+                costMap: generation.costMap
+            })
+        }
+
+        this.generations = this.generations.concat(newGenerations)
+    }
+    manageBest() {
+
+        this.bestGeneration = this.generations.reduce((bestGen, gen) => gen.totalCost > bestGen.totalCost ? bestGen : gen)
+
+        env.bestGenScore = this.bestGeneration.totalCost
+        if (env.bestGenScore > env.bestTotalScore) env.bestTotalScore = env.bestGenScore
     }
     reset() {
 
@@ -176,9 +206,8 @@ Game.prototype.visualize = function() {
         }
     }
  */
-    const bestGeneration = this.generations.reduce((bestGen, gen) => gen.score > bestGen.score ? max : gen)
 
-    for (const coord of bestGeneration.coords) {
+    for (const coord of this.bestGeneration.coords) {
 
         let color = `black`
         env.cm.fillStyle = color
@@ -194,7 +223,7 @@ Game.prototype.visualize = function() {
             env.cm.fillStyle = 'white'
             env.cm.font = "10px Arial";
             env.cm.textAlign = "center";
-            env.cm.fillText(this.costs[packXY(x, y)], x * env.coordSize + env.coordSize * 0.5, y * env.coordSize + env.coordSize * 0.75);
+            env.cm.fillText(this.bestGeneration.costMap[packXY(x, y)], x * env.coordSize + env.coordSize * 0.5, y * env.coordSize + env.coordSize * 0.75);
         }
     }
 /* 
